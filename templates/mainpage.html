@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech To Text</title>
+    <style>
+        #grad1 {
+          height: 1000px;
+          background-color: lightsalmon; /* For browsers that do not support gradients */
+          background-image: linear-gradient(lightsalmon, yellow);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div id="grad1">
+    <br><br>
+    <center>
+        <form action="{% url 'test_pass' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="audiofile">Select audio file to test commands on our model: </label>
+            <br><br>
+                <input type="file" id="audiofile" name="audiofile" accept="audio/*" file_extension=".wav">
+            <br><br>
+            <input type="submit">
+        </form>
+        <br><br>
+        {% if prediction %}
+            Your prediction is : {{ prediction }}
+        {% endif %}
+        {% if error_msg %}
+            {{ error_msg }}
+        {% endif %}
+        <br><br>
+        <form action="{% url 'play_audio' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            Play input audio
+            <br><br>
+            <input type="submit" value="Play Audio">
+        </form>
+        <br><br>
+        {% if play_msg %}
+            {{ play_msg }}
+        {% endif %}
+
+    <br><br><br>
+        <h4>Google Speech Recognition API</h4>
+        <form action="{% url 'speech_google' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button class="btn" type="submit" style="height: 50px; width: 50px">
+                <i class="fa fa-microphone"></i>
+            </button>
+        </form>
+    <br><br>
+        {% if predict_google %}
+            {{ predict_google }}
+        {% endif %}
+    </center>
+</div>
+</body>
+</html>
